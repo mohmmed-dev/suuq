@@ -32,21 +32,22 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'phone' => ['required', 'string', 'max:10', 'unique:' . User::class],
+            'phone' => ['required', 'string', 'max:10'],
         ]);
 
         $user = User::firstOrCreate([
-            'phone' => $request->phone,
+            'name' => 'user',
+            'phone' => $request->phone
         ]);
 
         $user->update([
-            'otp_code' => rand(1000, 9999),
+            'otp_code' => 12345678,
             'otp_expires_at' => now()->addMinutes(10),
         ]);
 
         $user->notify(new SendOtpNotification());
-        session()->put('login_phone', $user->phone);
 
-        return redirect(route('otp.verify', absolute: false));
+        session()->put('login_phone', $user->phone);
+        return redirect()->route('otp.verify');
     }
 }

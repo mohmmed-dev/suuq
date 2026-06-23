@@ -1,23 +1,38 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class OtpVerifyController extends Controller
 {
-    public function otpVerify(Request $request)
+
+    public function show()
+    {
+        $phone = session('login_phone');
+
+        if (!$phone) {
+            return redirect()->route('login');
+        }
+
+        return view('auth.otp-verify', compact('phone'));
+    }
+    public function store(Request $request)
     {
         $code = $request->validate([
-            'code' => ['required', 'numeric']
+            'code' => ['required']
         ]);
+
 
         $phone = session('login_phone');
 
         if (!$phone) {
             return redirect()->route('login');
         }
+
 
         $user = User::where('phone', $phone)->first();
 
@@ -31,8 +46,13 @@ class OtpVerifyController extends Controller
 
             session()->forget('login_phone');
 
+            if ($user->name == 'user') {
+                return redirect()->route('name');
+            }
+
             return redirect()->route('dashboard');
         }
+        dd('3874');
 
         return redirect()->route('login');
     }
