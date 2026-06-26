@@ -54,13 +54,23 @@ class User extends Authenticatable
             ->implode('');
     }
 
-    public function Product()
+    public function products()
     {
-        return $this->belongsToMany(Product::class)->withTimestamps();
+        return $this->belongsToMany(Product::class, 'carts')->withPivot('quantity')->withTimestamps();
     }
 
-    public function Comments()
+    public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany(Product::class, 'likes')->withTimestamps();
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

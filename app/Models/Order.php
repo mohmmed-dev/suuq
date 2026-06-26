@@ -9,4 +9,19 @@ class Order extends Model
 {
     /** @use HasFactory<\Database\Factories\OrderFactory> */
     use HasFactory;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'order_product')->withPivot('quantity', 'price')->withTimestamps();
+    }
+
+    // public function status()
+    // {
+    //     $this->belongsTo(OrderStatus::class);
+    // }
 }

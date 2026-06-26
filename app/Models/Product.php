@@ -14,7 +14,7 @@ class Product extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->belongsToMany(User::class, 'carts')->withPivot('quantity')->withTimestamps();
     }
 
     public function likes()
@@ -24,11 +24,16 @@ class Product extends Model
 
     public function orders()
     {
-        $this->belongsToMany(Order::class)->withPivot('')->withTimestamps();
+        return $this->belongsToMany(Order::class, 'order_product')->withPivot('quantity', 'price')->withTimestamps();
     }
 
-    public function Comments()
+    public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

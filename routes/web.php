@@ -1,20 +1,24 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// ===== PUBLIC MARKETPLACE ROUTES =====
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/', [ProductController::class, 'index'])->name('products.index');
+Route::get('/product/{slug}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/category/{category:slug}', [CategoryController::class, 'show'])->name('category.show');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [UserController::class, 'setting'])->name('setting');
+    Route::get('/carts', [UserController::class, 'carts'])->name('carts');
+    Route::get('/favorites', [UserController::class, 'favorites'])->name('favorites');
+    Route::delete('/profile', [UserController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/orders', [UserController::class, 'setting'])->name('order.index');
+    Route::get('/order', [UserController::class, 'setting'])->name('order.show');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

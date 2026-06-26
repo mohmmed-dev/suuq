@@ -2,11 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\like;
+use App\Models\Like;
+use App\Models\User;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<like>
+ * @extends Factory<Like>
  */
 class LikeFactory extends Factory
 {
@@ -18,7 +20,8 @@ class LikeFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
+            'product_id' => Product::inRandomOrder()->first()?->id ?? Product::factory(),
         ];
     }
 }
