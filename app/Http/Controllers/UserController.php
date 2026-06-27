@@ -24,7 +24,7 @@ class UserController extends Controller
     public function carts()
     {
         $user = $this->user;
-        $products = $user->products()->paginate(12);
+        $products = $user->products;
 
         return view('profile.carts', compact('products'));
     }

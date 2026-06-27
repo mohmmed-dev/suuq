@@ -18,7 +18,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/favorites', [UserController::class, 'favorites'])->name('favorites');
     Route::delete('/profile', [UserController::class, 'destroy'])->name('profile.destroy');
     Route::get('/orders', [UserController::class, 'setting'])->name('order.index');
-    Route::get('/order', [UserController::class, 'setting'])->name('order.show');
+    // Route::get('/order', [UserController::class, 'carts'])->name('order.store');
+    Route::get('/order/{order}', [UserController::class, 'setting'])->name('order.show');
 });
 
 require __DIR__ . '/auth.php';
